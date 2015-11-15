@@ -399,11 +399,9 @@ endif
 set formatoptions=q
 set ambiwidth=double
 
- colorscheme elflord     " sets color scheme;  default (black bkgr), torte (black bgr), murphy (black bkgr), elflord (black bkgr), blue (blue bkgr), morning (white bkgr), shine (white bkgr) 
-"" set t_Co=256
-"set t_Co=16
-" colorscheme molokai
-"let g:molokai_original=1
-"set background=dark
-" colorscheme hybrid
+set t_Co=256
+let g:rehash256=1
+let g:molokai_original=1
+set background=dark
+colorscheme molokai
 syntax on
