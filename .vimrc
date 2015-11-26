@@ -37,14 +37,13 @@ endif
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Align'
 NeoBundle 'syngan/vim-pukiwiki'
-" NeoBundle 'thinca/vim-quickrun', 'ver.0.6.0'
-" NeoBundle 'thinca/vim-quickrun', 'ver.0.5.1'
 NeoBundle 'thinca/vim-quickrun'
 
 NeoBundle 'tpope/vim-rails', { 'autoload' : {
       \ 'filetypes' : ['haml', 'ruby', 'eruby'] }}
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'kana/vim-submode'
+NeoBundle 'yuratomo/w3m.vim'
 
 
 call neobundle#end()
@@ -111,14 +110,14 @@ nnoremap <silent> <Leader>fe :<C-u>VimFilerBufferDir -quit<CR>
 "現在開いているバッファをIDE風に開く
 nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
 
-"デフォルトのキーマッピングを変更
-augroup vimrc
-  autocmd FileType vimfiler call s:vimfiler_my_settings()
-augroup END
-function! s:vimfiler_my_settings()
-  nmap <buffer> q <Plug>(vimfiler_exit)
-  nmap <buffer> Q <Plug>(vimfiler_hide)
-endfunction
+" "デフォルトのキーマッピングを変更
+" augroup vimrc
+"   autocmd FileType vimfiler call s:vimfiler_my_settings()
+" augroup END
+" function! s:vimfiler_my_settings()
+"   nmap <buffer> q <Plug>(vimfiler_exit)
+"   nmap <buffer> Q <Plug>(vimfiler_hide)
+" endfunction
 
 "}}}
 
@@ -238,7 +237,7 @@ nmap <Space> <Plug>RDSendLine
 
 "unite prefix key.
 nnoremap [unite] <Nop>
-nmap u [unite]
+nmap m [unite]
 
 "インサートモードで開始しない
 let g:unite_enable_start_insert = 0
@@ -405,3 +404,4 @@ let g:molokai_original=1
 set background=dark
 colorscheme molokai
 syntax on
+hi Normal          ctermfg=252 ctermbg=none
