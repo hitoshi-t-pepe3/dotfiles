@@ -20,7 +20,6 @@ call neobundle#begin(expand('~/.vim/bundle'))
 " Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-" ここにインストールしたいプラグインのリストを書く:
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
@@ -38,13 +37,20 @@ NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Align'
 NeoBundle 'syngan/vim-pukiwiki'
 NeoBundle 'thinca/vim-quickrun'
-
 NeoBundle 'tpope/vim-rails', { 'autoload' : {
       \ 'filetypes' : ['haml', 'ruby', 'eruby'] }}
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'kana/vim-submode'
 NeoBundle 'yuratomo/w3m.vim'
-
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'marcus/rsense'
+NeoBundle 'supermomonga/neocomplete-rsense.vim'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'yuku-t/vim-ref-ri'
+NeoBundle 'szw/vim-tags'
+NeoBundle 'tpope/vim-endwise'
 
 call neobundle#end()
 
@@ -54,6 +60,26 @@ filetype plugin indent on
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
 NeoBundleCheck
+
+
+" Rsense
+let g:rsenseHome = '/usr/local/lib/rsense-0.3'
+let g:rsenseUseOmniFunc = 1
+
+" neocomplete.vim
+let g:acp_enableAtStartup = 0
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
+
+" rubocop
+" syntastic_mode_mapをactiveにするとバッファ保存時にsyntasticが走る
+" active_filetypesに、保存時にsyntasticを走らせるファイルタイプを指定する
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby'] }
+let g:syntastic_ruby_checkers = ['rubocop']
 
 " vim-quickrun
 let g:bufferline_echo = 0
@@ -255,6 +281,12 @@ let g:unite_source_file_mru_filename_format = ''
 "bookmarkだけホームディレクトリに保存
 let g:unite_source_bookmark_directory = $HOME . '/.unite/bookmark'
 
+" lightline.vim
+let g:lightline = {
+        \ 'colorscheme': 'wombat'
+        \ }
+
+
 "現在開いているファイルのディレクトリ下のファイル一覧。
 "開いていない場合はカレントディレクトリ
 nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
@@ -405,3 +437,4 @@ set background=dark
 colorscheme molokai
 syntax on
 hi Normal          ctermfg=252 ctermbg=none
+hi Comment         ctermfg=lightcyan

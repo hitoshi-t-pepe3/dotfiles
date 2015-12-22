@@ -2,6 +2,8 @@
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
+# export TERM=xterm-256color
+# export TERM=screen-256color
 # End of lines configured by zsh-newuser-install
 
 # # rbenv
