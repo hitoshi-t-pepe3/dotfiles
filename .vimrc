@@ -23,10 +23,11 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/vimproc', {
     \ 'build' : {
+    \     'windows' : 'make -f make_mingw32.mak',
     \     'cygwin' : 'make -f make_cygwin.mak',
-    \     'windows' : 'tools\\update-dll-mingw',
+    \     'mac' : 'make -f make_mac.mak',
     \     'unix' : 'make -f make_unix.mak',
-    \   },
+    \    },
     \ }
 if 703 <= v:version
     NeoBundle 'Shougo/unite.vim'
@@ -44,8 +45,16 @@ NeoBundle 'kana/vim-submode'
 NeoBundle 'yuratomo/w3m.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'marcus/rsense'
-NeoBundle 'supermomonga/neocomplete-rsense.vim'
+" NeoBundle 'marcus/rsense'
+NeoBundleLazy 'marcus/rsense', {
+      \ 'autoload': {
+      \   'filetypes': 'ruby',
+      \ },
+      \ }
+NeoBundle 'supermomonga/neocomplete-rsense.vim', {
+      \ 'depends': ['Shougo/neocomplete.vim', 'marcus/rsense'],
+      \ }
+
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'yuku-t/vim-ref-ri'
@@ -88,17 +97,22 @@ let g:bufferline_echo = 0
 let g:quickrun_config = {}
 let g:quickrun_config = {
   \   "_" : {
-  \     'runner': 'remote/vimproc',
+  \     'runner': 'vimproc',
   \     "runner/vimproc/updatetime" : 10,
+  \     "outputter/buffer/split" : ":botright",
   \     "outputter/buffer/close_on_empty" : 1,
   \     'hook/time/enable': '1',
   \   },
   \}
+
+"quickfix
+"
 let g:quickrun_config['ruby.rspec'] = {
   \ 'command': "rspec",
   \ 'cmdopt': '-c -fd',
   \ 'exec': "bundle exec %c %o",
   \}
+
 augroup QRunRSpec
   autocmd!
   autocmd BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.rspec
@@ -114,6 +128,13 @@ fun! QRunRspecCurrentLine()
   " for rspec2
   exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt '-l " . line . " -c -fd'" 
 endfun
+
+" <C-c> で実行を強制終了させる
+" quickrun.vim が実行していない場合には <C-c> を呼び出す
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+
+"" 実行が成功すればバッファへ、失敗すれば quickfix へ出力する
+":QuickRun -outputter error -outputter/error/success buffer -outputter/error quickfix
 
 " vim-pukiwiki
 let g:pukiwiki_config = {
