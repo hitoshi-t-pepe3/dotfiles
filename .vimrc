@@ -284,7 +284,7 @@ nmap <Space> <Plug>RDSendLine
 
 "unite prefix key.
 nnoremap [unite] <Nop>
-nmap m [unite]
+nmap , [unite]
 
 "インサートモードで開始しない
 let g:unite_enable_start_insert = 0
@@ -384,12 +384,16 @@ call submode#map('bufmove', 'n', '', '-', '<C-w>-')
 "ヤンクでクリップボードにコピー
 set clipboard=unnamed,autoselect
 
+" ESCでIMEをOFF
+"" for ubuntu mozc
+""" FIXME 日本語入力へ復帰時に、Ctrl + OFF を押下しなければいけない
+call system('type ibus')
+if v:shell_error == 0
+    inoremap <Esc> <Esc>:call system('ibus engine "xkb:jp::jpn"')<CR> " JIS配列でIMEをオフ
+endif
+
 "------------------------------------------------------------------------------
 
-" color
-let &t_Co=256
-
-syntax on
 "set patchmode=.clean
 "set nobackup
 "set nowritebackup
@@ -419,7 +423,7 @@ set visualbell t_vb=
 " indent：行頭の空白
 " eol：改行
 " start：挿入モード開始位置より手前の文字
-set backspace=indent,eol,start
+" set backspace=indent,eol,start
 " コマンド、検索パターンを100個まで履歴に残す
 set history=100
 " 検索の時に大文字小文字を区別しない
@@ -451,11 +455,13 @@ endif
 set formatoptions=q
 set ambiwidth=double
 
+syntax on
+" color
 set t_Co=256
+let &t_Co=256
 let g:rehash256=1
 let g:molokai_original=1
 set background=dark
 colorscheme molokai
-syntax on
 hi Normal          ctermfg=252 ctermbg=none
 hi Comment         ctermfg=lightcyan
