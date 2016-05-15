@@ -109,6 +109,11 @@ NeoBundle 'thinca/vim-ref'
 NeoBundle 'yuku-t/vim-ref-ri'
 NeoBundle 'szw/vim-tags'
 NeoBundle 'tpope/vim-endwise'
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'kmnk/vim-unite-giti'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'violetyk/cake.vim'
+NeoBundle 'vim-scripts/VimCoder.jar'
 
 call neobundle#end()
 
@@ -118,7 +123,6 @@ filetype plugin indent on
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
 NeoBundleCheck
-
 
 " Rsense
 let g:rsenseHome = '/usr/local/lib/rsense-0.3'
@@ -173,9 +177,9 @@ nnoremap <silent> [quickrun]r :call QRunRspecCurrentLine()<CR>
 fun! QRunRspecCurrentLine()
   let line = line(".")
   " for rspec3
-  " exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt ':" . line . " -cfd'" 
+  exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt ':" . line . " -cfd'" 
   " for rspec2
-  exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt '-l " . line . " -c -fd'" 
+  " exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt '-l " . line . " -c -fd'" 
 endfun
 
 " <C-c> で実行を強制終了させる
@@ -432,14 +436,6 @@ call submode#map('bufmove', 'n', '', '-', '<C-w>-')
 
 "ヤンクでクリップボードにコピー
 set clipboard=unnamed,autoselect
-
-" ESCでIMEをOFF
-"" for ubuntu mozc
-""" FIXME 日本語入力へ復帰時に、Ctrl + OFF を押下しなければいけない
-call system('type ibus')
-if v:shell_error == 0
-    inoremap <Esc> <Esc>:call system('ibus engine "xkb:jp::jpn"')<CR> " JIS配列でIMEをオフ
-endif
 
 "------------------------------------------------------------------------------
 
