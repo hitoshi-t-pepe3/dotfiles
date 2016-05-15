@@ -437,6 +437,19 @@ call submode#map('bufmove', 'n', '', '-', '<C-w>-')
 "ヤンクでクリップボードにコピー
 set clipboard=unnamed,autoselect
 
+" ESCでIMEをOFF
+"" for ubuntu mozc
+""" FIXME 日本語入力へ復帰時に、Ctrl + OFF を押下しなければいけない
+"call system('type ibus')
+"if v:shell_error == 0
+"    inoremap <Esc> <Esc>:call system('ibus engine "xkb:jp::jpn"')<CR> " JIS配列でIMEをオフ
+"endif
+function! ImInActivate()
+  call system('fcitx-remote -c')
+endfunction
+inoremap <silent> <C-[> <ESC>:call ImInActivate()<CR>
+
+
 "------------------------------------------------------------------------------
 
 "set patchmode=.clean
@@ -502,11 +515,11 @@ set ambiwidth=double
 
 syntax on
 " color
-set t_Co=256
-let &t_Co=256
-let g:rehash256=1
+" set t_Co=256
+" let &t_Co=256
+" let g:rehash256=1
 let g:molokai_original=1
 set background=dark
 colorscheme molokai
-hi Normal          ctermfg=252 ctermbg=none
+" hi Normal          ctermfg=252 ctermbg=none
 hi Comment         ctermfg=lightcyan
