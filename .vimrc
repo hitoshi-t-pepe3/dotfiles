@@ -137,6 +137,9 @@ if !exists('g:neocomplete#force_omni_input_patterns')
 endif
 let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
 
+" nerdtree
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
+
 " rubocop
 " syntastic_mode_mapをactiveにするとバッファ保存時にsyntasticが走る
 " active_filetypesに、保存時にsyntasticを走らせるファイルタイプを指定する
@@ -177,7 +180,7 @@ nnoremap <silent> [quickrun]r :call QRunRspecCurrentLine()<CR>
 fun! QRunRspecCurrentLine()
   let line = line(".")
   " for rspec3
-  exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt ':" . line . " -cfd'" 
+  exe ":QuickRun -exec 'bundle exec rspec %s:" . line ."  %o' -cmdopt '-cfd' -debug x" 
   " for rspec2
   " exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt '-l " . line . " -c -fd'" 
 endfun
@@ -320,9 +323,6 @@ let vimrplugin_conqueplugin = 0
 let g:vimrplugin_map_r = 1
 " see R documentation in a Vim buffer
 let vimrplugin_vimpager = "no"
-set expandtab
-set shiftwidth=2
-set tabstop=2
 " start R with F2 key
 map <F2> <Plug>RStart 
 imap <F2> <Plug>RStart
@@ -470,11 +470,11 @@ set noautoindent
 set cindent
 set encoding=utf8
 set antialias
-set expandtab
 set smarttab
 set showtabline=2
-set tabstop=4
-set shiftwidth=4
+set shiftwidth=2
+set tabstop=2
+set expandtab
 set nrformats=
 set visualbell t_vb=
 " バックスペースキーで削除出来るものを指定
@@ -515,11 +515,11 @@ set ambiwidth=double
 
 syntax on
 " color
-" set t_Co=256
-" let &t_Co=256
-" let g:rehash256=1
-let g:molokai_original=1
-set background=dark
 colorscheme molokai
+set t_Co=256
+let &t_Co=256
+let g:rehash256=1
+let g:molokai_original=1
+" set background=dark
 " hi Normal          ctermfg=252 ctermbg=none
-hi Comment         ctermfg=lightcyan
+" hi Comment         ctermfg=lightcyan
