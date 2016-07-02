@@ -124,6 +124,7 @@ NeoBundleLazy 'alpaca-tc/alpaca_tags', {
               \       ],
               \    }
               \ }
+NeoBundle "ctrlpvim/ctrlp.vim"
 
 call neobundle#end()
 
