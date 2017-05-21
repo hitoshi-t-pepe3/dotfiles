@@ -135,6 +135,18 @@ filetype plugin indent on
 " this will conveniently prompt you to install them.
 NeoBundleCheck
 
+" vimsell
+" ,is: シェルを起動
+nnoremap <silent> ,is :VimShell<CR>
+" ,ipy: pythonを非同期で起動
+nnoremap <silent> ,ipy :VimShellInteractive python<CR>
+" ,irb: irbを非同期で起動
+nnoremap <silent> ,irb :VimShellInteractive irb<CR>
+" ,ss: 非同期で開いたインタプリタに現在の行を評価させる
+vmap <silent> ,ss :VimShellSendString<CR>
+" 選択中に,ss: 非同期で開いたインタプリタに選択行を評価させる
+nnoremap <silent> ,ss <S-v>:VimShellSendString<CR>
+
 " alpaca_tags
 let g:alpaca_tags#config = {
                        \    '_' : '-R --sort=yes',
@@ -192,7 +204,7 @@ let g:quickrun_config = {
 let g:quickrun_config['ruby.rspec'] = {
   \ 'command': "rspec",
   \ 'cmdopt': '-c -fd',
-  \ 'exec': "bundle exec %c %o",
+  \ 'exec': "bundle exec spring rspec %c %o",
   \}
 
 augroup QRunRSpec
@@ -206,7 +218,7 @@ nnoremap <silent> [quickrun]r :call QRunRspecCurrentLine()<CR>
 fun! QRunRspecCurrentLine()
   let line = line(".")
   " for rspec3
-  exe ":QuickRun -exec 'bundle exec rspec %s:" . line ."  %o' -cmdopt '-cfd' -debug x" 
+  exe ":QuickRun -exec 'bundle exec spring rspec %s:" . line ."  %o' -cmdopt '-cfd'" 
   " for rspec2
   " exe ":QuickRun -exec 'bundle exec %c %s %o' -cmdopt '-l " . line . " -c -fd'" 
 endfun
@@ -296,67 +308,6 @@ map <silent> [Tag]n :tabnext<CR>
 " tn 次のタブ
 map <silent> [Tag]p :tabprevious<CR>
 " tp 前のタブ
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" sample settings for vim-r-plugin and screen.vim
-" Installation 
-"       - Place plugin file under ~/.vim/
-"       - To activate help, type in vim :helptags ~/.vim/doc
-"       - Place the following vim conf lines in .vimrc
-" Usage
-"       - Read intro/help in vim with :h vim-r-plugin or :h screen.txt
-"       - To initialize vim/R session, start screen/tmux, open some *.R file in vim and then hit F2 key
-"       - Object/omni completion command CTRL-X CTRL-O
-"       - To update object list for omni completion, run :RUpdateObjList
-" My favorite Vim/R window arrangement 
-"	tmux attach
-"	Open *.R file in Vim and hit F2 to open R
-"	Go to R pane and create another pane with C-a %
-"	Open second R session in new pane
-"	Go to vim pane and open a new viewport with :split *.R
-" Useful tmux commands
-"       tmux new -s <myname>       start new session with a specific name
-"	tmux ls (C-a-s)            list tmux session
-"       tmux attach -t <id>        attach to specific session  
-"       tmux kill-session -t <id>  kill specific session
-" 	C-a-: kill-session         kill a session
-" 	C-a %                      split pane vertically
-"       C-a "                      split pane horizontally
-" 	C-a-o                      jump cursor to next pane
-"	C-a C-o                    swap panes
-" 	C-a-: resize-pane -L 10    resizes pane by 10 to left (L R U D)
-" Corresponding Vim commands
-" 	:split or :vsplit      split viewport
-" 	C-w-w                  jump cursor to next pane-
-" 	C-w-r                  swap viewports
-" 	C-w C-++               resize viewports to equal split
-" 	C-w 10+                increase size of current pane by value
-
-" To open R in terminal rather than RGui (only necessary on OS X)
-" let vimrplugin_applescript = 0
-" let vimrplugin_screenplugin = 0
-" For tmux support
-let g:ScreenImpl = 'Tmux'
-let vimrplugin_screenvsplit = 1 " For vertical tmux split
-let g:ScreenShellInitialFocus = 'shell' 
-" instruct to use your own .screenrc file
-let g:vimrplugin_noscreenrc = 1
-" For integration of r-plugin with screen.vim
-let g:vimrplugin_screenplugin = 1
-" Don't use conque shell if installed
-let vimrplugin_conqueplugin = 0
-" map the letter 'r' to send visually selected lines to R 
-let g:vimrplugin_map_r = 1
-" see R documentation in a Vim buffer
-let vimrplugin_vimpager = "no"
-" start R with F2 key
-map <F2> <Plug>RStart 
-imap <F2> <Plug>RStart
-vmap <F2> <Plug>RStart
-" send selection to R with space bar
-vmap <Space> <Plug>RDSendSelection 
-" send line to R with space bar
-nmap <Space> <Plug>RDSendLine
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "unite {{{
@@ -495,6 +446,8 @@ set number
 set noautoindent
 set cindent
 set encoding=utf8
+set fileencodings=utf-8,euc-jp,sjis,iso-2022-jp
+set fileformats=unix,dos,mac
 set antialias
 set smarttab
 set showtabline=2
@@ -549,3 +502,5 @@ let g:molokai_original=1
 " set background=dark
 " hi Normal          ctermfg=252 ctermbg=none
 " hi Comment         ctermfg=lightcyan
+
+nmap <silent> <leader>w :exec 'silent !google-chrome % &'
