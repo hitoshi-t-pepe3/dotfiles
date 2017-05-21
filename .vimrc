@@ -2,66 +2,12 @@
 "------------------------------------------------------------------------------
 " Note: Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
-
-let $VIMBUNDLE = '~/.vim/bundle'
-let $NEOBUNDLEPATH = $VIMBUNDLE . '/neobundle.vim'
-if stridx(&runtimepath, $NEOBUNDLEPATH) != -1
-" If the NeoBundle doesn't exist.
-command! NeoBundleInit try | call s:neobundle_init()
-            \| catch /^neobundleinit:/
-                \|   echohl ErrorMsg
-                \|   echomsg v:exception
-                \|   echohl None
-                \| endtry
-
-function! s:neobundle_init()
-    redraw | echo "Installing neobundle.vim..."
-    if !isdirectory($VIMBUNDLE)
-        call mkdir($VIMBUNDLE, 'p')
-        echo printf("Creating '%s'.", $VIMBUNDLE)
-    endif
-    cd $VIMBUNDLE
-
-    if executable('git')
-        call system('git clone git://github.com/Shougo/neobundle.vim')
-        if v:shell_error
-            throw 'neobundleinit: Git error.'
-        endif
-    endif
-
-    set runtimepath& runtimepath+=$NEOBUNDLEPATH
-    call neobundle#rc($VIMBUNDLE)
-    try
-        echo printf("Reloading '%s'", $MYVIMRC)
-        source $MYVIMRC
-    catch
-        echohl ErrorMsg
-        echomsg 'neobundleinit: $MYVIMRC: could not source.'
-        echohl None
-        return 0
-    finally
-        echomsg 'Installed neobundle.vim'
-    endtry
-
-    echomsg 'Finish!'
-endfunction
-
-autocmd! VimEnter * redraw
-            \ | echohl WarningMsg
-            \ | echo "You should do ':NeoBundleInit' at first!"
-            \ | echohl None
-endif
-
-"--------------------------------------------------------------------------
-"" neobundle
 set nocompatible               " Be iMproved
 filetype off                   " Required!
 
 if has('vim_starting')
-    set runtimepath+=~/.vim/bundle/neobundle.vim/
+set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-
-set undolevels=1000
 
 call neobundle#begin(expand('~/.vim/bundle'))
 
@@ -131,9 +77,7 @@ call neobundle#end()
 " Reqiured:
 filetype plugin indent on
 
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
+set undolevels=1000
 
 " vimsell
 " ,is: シェルを起動
