@@ -6,22 +6,21 @@ SAVEHIST=1000
 # export TERM=screen-256color
 # End of lines configured by zsh-newuser-install
 
-# # rbenv
-# export PATH="$HOME/.rbenv/bin:$PATH" 
-# eval "$(rbenv init - zsh)"
-# phpenv
+# rbenv
 if [ -d $HOME/.rbenv/bin ]; then
   export PATH="$PATH:$HOME/.rbenv/bin"
   eval "$(rbenv init - zsh)"
 fi
 
+# phpenv
 if [ -d $HOME/.phpenv/bin ]; then
   export PATH="$PATH:$HOME/.rbenv/bin:$HOME/.phpenv/bin"
   eval "$(phpenv init - zsh)"
 fi
 
-
-
+# pyenv
+eval "$(pyenv init - zsh)"
+eval "$(pyenv virtualenv-init - zsh)"
 
 # PS1='${debian_chroot:+($debian_chroot)}[\t] \$ '
 PROMPT='[%n@%m]# '
@@ -48,3 +47,10 @@ function google() {
 function p2m() {
   pdftohtml $1 -stdout | w3m -T text/html;
 }
+
+alias la="ls -a"
+alias ll="ls -l"
+alias du="du -h"
+alias df="df -h"
+
+[ -f ~/.bundler-exec.sh ] && source ~/.bundler-exec.sh

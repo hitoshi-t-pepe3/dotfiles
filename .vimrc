@@ -71,6 +71,7 @@ NeoBundleLazy 'alpaca-tc/alpaca_tags', {
               \    }
               \ }
 NeoBundle "ctrlpvim/ctrlp.vim"
+NeoBundle 'rking/ag.vim'
 
 call neobundle#end()
 
@@ -270,6 +271,22 @@ if executable('ack-grep')
   let g:unite_source_grep_recursive_opt = ''
 endif
 
+" For ag.
+
+" カーソル位置の単語をgrep検索
+nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+
+if executable('ag')
+    let g:ctrlp_use_caching=0
+    let g:ctrlp_user_command='ag %s -i --nocolor --nogroup -g ""'
+endif
+
 "file_mruの表示フォーマットを指定。空にすると表示スピードが高速化される
 let g:unite_source_file_mru_filename_format = ''
 
@@ -365,11 +382,42 @@ set clipboard=unnamed,autoselect
 "if v:shell_error == 0
 "    inoremap <Esc> <Esc>:call system('ibus engine "xkb:jp::jpn"')<CR> " JIS配列でIMEをオフ
 "endif
-function! ImInActivate()
-  call system('fcitx-remote -c')
-endfunction
-inoremap <silent> <C-[> <ESC>:call ImInActivate()<CR>
+" function! ImInActivate()
+"   call system('fcitx-remote -c')
+" endfunction
+" inoremap <silent> <C-[> <ESC>:call ImInActivate()<CR>
+augroup MyAutoCmd
+    autocmd!
+augroup END
+autocmd MyAutoCmd InsertLeave * set iminsert=0 imsearch=0
 
+" IIIMF handling, it must fallbacks to xim (+ set  imactivatekey)
+if $GTK_IM_MODULE == "iiim"
+  let $GTK_IM_MODULE='xim'
+  set imactivatekey="C-space"
+endif "
+
+" ibus handling, it must fallbacks to xim
+if $GTK_IM_MODULE == "ibus"
+  let $GTK_IM_MODULE='xim'
+endif "
+
+inoremap  <sllent> <Esc> <Esc>:call IMCtrl('Off')<CR>
+
+""""""""""""""""""""""""""""""
+" 日本語入力固定モードの制御関数(デフォルト)
+""""""""""""""""""""""""""""""
+function! IMCtrl(cmd)
+  let cmd = a:cmd
+  if cmd == 'On'
+    let res = system('xvkbd -text "\[Control]\[Shift]\[Insert]" > /dev/null 2>&1')
+  elseif cmd == 'Off'
+    let res = system('xvkbd -text "\[Control]\[Shift]\[Delete]" > /dev/null 2>&1')
+  elseif cmd == 'Toggle'
+    let res = system('xvkbd -text "\[Control]\[space]" > /dev/null 2>&1')
+  endif
+  return ''
+endfunction
 
 "------------------------------------------------------------------------------
 
